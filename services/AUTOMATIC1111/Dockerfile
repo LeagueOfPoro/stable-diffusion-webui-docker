@@ -71,12 +71,15 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=394ffa7b0a7fff3ec484bcd084e673a8b301ccc8
+ARG SHA=68f336bd994bed5442ad95bad6b6ad5564a5409a
 RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion-webui && \
   git fetch && \
   git reset --hard ${SHA} && \
   pip install -r requirements_versions.txt
+
+RUN cd /stable-diffusion-webui/repositories/ && \
+  git clone https://github.com/Stability-AI/generative-models.git
 
 COPY . /docker
 
